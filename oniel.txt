@@ -1,0 +1,25 @@
+# Usar una imagen base más ligera
+FROM python:3.12-slim
+ 
+# Exponer el puerto 5000 para la aplicación
+EXPOSE 5000
+ 
+# Instalar dependencias necesarias
+RUN apt-get update && \
+    apt-get install -y git python3-venv && \
+    apt-get clean && \
+    apt-get autoremove -y
+ 
+# Clonar el repositorio desde GitHub
+RUN git clone https://github.com/JokerO-O/oniel.git
+ 
+# Establecer el directorio de trabajo al repositorio clonado
+WORKDIR oniel
+ 
+# Crear el entorno virtual e instalar las dependencias
+RUN python3 -m venv venv && \
+    ./venv/bin/pip install --upgrade pip && \
+    ./venv/bin/pip install -r requirements.txt
+ 
+# Comando para ejecutar la aplicación dentro del entorno virtual
+CMD ["./venv/bin/python", "oniel.py"]
